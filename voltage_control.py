@@ -20,130 +20,148 @@ class VoltageControlFrame(ttk.LabelFrame):
 
     def create_widgets(self):
 
-        self.vmax_var = tk.StringVar(value="100")
-        self.vstep_var = tk.StringVar(value="10")
-        self.compliance_var = tk.StringVar(value="1.0")
+    	self.vmax_var = tk.StringVar(value="240")
+    	self.vstep_var = tk.StringVar(value="5")
+    	self.compliance_var = tk.StringVar(value="1.0")
 
-        self.vmax_entry = ttk.Entry(
-            self,
-            textvariable=self.vmax_var,
-            width=12
-        )
+    	self.iv_reset_button = ttk.Button(
+        	self,
+        	text="Measure IV and Reset",
+        	command=self.measure_iv_reset
+    	)
 
-        self.vstep_entry = ttk.Entry(
-            self,
-            textvariable=self.vstep_var,
-            width=12
-        )
+    	self.iv_hold_button = ttk.Button(
+        	self,
+        	text="Measure IV and Hold",
+        	command=self.measure_iv_hold
+    	)
 
-        self.compliance_entry = ttk.Entry(
-            self,
-            textvariable=self.compliance_var,
-            width=12
-        )
+    	self.step_hold_button = ttk.Button(
+        	self,
+        	text="Step and Hold",
+        	command=self.step_and_hold
+    	)
 
-        self.iv_reset_button = ttk.Button(
-            self,
-            text="Measure IV and Reset",
-            command=self.measure_iv_reset
-        )
-
-        self.iv_hold_button = ttk.Button(
-            self,
-            text="Measure IV and Hold",
-            command=self.measure_iv_hold
-        )
-
-        self.step_hold_button = ttk.Button(
-            self,
-            text="Step and Hold",
-            command=self.step_and_hold
-        )
-
-        self.reset_button = ttk.Button(
-            self,
-            text="Reset 0V",
-            command=self.reset_voltage
-        )
+    	self.reset_button = ttk.Button(
+        	self,
+        	text="Reset 0V",
+        	command=self.reset_voltage
+    	)
 
     def create_layout(self):
 
-        parameters = ttk.Frame(self)
-        parameters.grid(
-            row=0,
-            column=0,
-            columnspan=2,
-            sticky="ew",
-            pady=(0, 10)
-        )
+    	# --------------------------------------------------------
+    	# Voltage parameter inputs
+    	# --------------------------------------------------------
 
-        ttk.Label(
-            parameters,
-            text="Vmax (V)"
-        ).grid(row=0, column=0, padx=5)
+    	parameters = ttk.Frame(self)
 
-        self.vmax_entry.grid(
-            in_=parameters,
-            row=0,
-            column=1,
-            padx=5
-        )
+    	parameters.grid(
+        	row=0,
+        	column=0,
+        	columnspan=2,
+        	sticky="ew",
+        	pady=(0, 10)
+    	)
 
-        ttk.Label(
-            parameters,
-            text="Vstep (V)"
-        ).grid(row=0, column=2, padx=5)
+    	ttk.Label(
+        	parameters,
+        	text="Vmax (V)"
+    	).grid(
+        	row=0,
+        	column=0,
+        	padx=5
+    	)
 
-        self.vstep_entry.grid(
-            in_=parameters,
-            row=0,
-            column=3,
-            padx=5
-        )
+    	self.vmax_entry = ttk.Entry(
+        	parameters,
+        	textvariable=self.vmax_var,
+        	width=12
+    	)
 
-        ttk.Label(
-            parameters,
-            text="Max Compliance"
-        ).grid(row=0, column=4, padx=5)
+    	self.vmax_entry.grid(
+        	row=0,
+        	column=1,
+        	padx=5
+    	)
 
-        self.compliance_entry.grid(
-            in_=parameters,
-            row=0,
-            column=5,
-            padx=5
-        )
+    	ttk.Label(
+        	parameters,
+        	text="Vstep (V)"
+    	).grid(
+        	row=0,
+        	column=2,
+        	padx=5
+    	)
 
-        self.iv_reset_button.grid(
-            row=1,
-            column=0,
-            padx=5,
-            pady=5,
-            sticky="ew"
-        )
+    	self.vstep_entry = ttk.Entry(
+        	parameters,
+        	textvariable=self.vstep_var,
+        	width=12
+    	)
 
-        self.iv_hold_button.grid(
-            row=1,
-            column=1,
-            padx=5,
-            pady=5,
-            sticky="ew"
-        )
+    	self.vstep_entry.grid(
+        	row=0,
+        	column=3,
+        	padx=5
+    	)
 
-        self.step_hold_button.grid(
-            row=2,
-            column=0,
-            padx=5,
-            pady=5,
-            sticky="ew"
-        )
+    	ttk.Label(
+        	parameters,
+        	text="Max Compliance [uA]"
+    	).grid(
+        	row=0,
+        	column=4,
+        	padx=5
+    	)
 
-        self.reset_button.grid(
-            row=2,
-            column=1,
-            padx=5,
-            pady=5,
-            sticky="ew"
-        )
+    	self.compliance_entry = ttk.Entry(
+        	parameters,
+        	textvariable=self.compliance_var,
+        	width=12
+    	)
+
+    	self.compliance_entry.grid(
+        	row=0,
+        	column=5,
+        	padx=5
+    	)
+
+    	# --------------------------------------------------------
+    	# Control buttons
+    	# --------------------------------------------------------
+
+    	self.iv_reset_button.grid(
+        	row=1,
+        	column=0,
+        	padx=5,
+        	pady=5,
+        	sticky="ew"
+    	)
+
+    	self.iv_hold_button.grid(
+        	row=1,
+        	column=1,
+        	padx=5,
+        	pady=5,
+        	sticky="ew"
+    	)
+
+    	self.step_hold_button.grid(
+        	row=2,
+        	column=0,
+        	padx=5,
+        	pady=5,
+        	sticky="ew"
+    	)
+
+    	self.reset_button.grid(
+        	row=2,
+        	column=1,
+        	padx=5,
+        	pady=5,
+        	sticky="ew"
+    	)
 
     def get_parameters(self):
 

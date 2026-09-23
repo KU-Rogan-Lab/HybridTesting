@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+
 class ButtonLockout:
 
     def __init__(self, button, duration_ms=1000):
