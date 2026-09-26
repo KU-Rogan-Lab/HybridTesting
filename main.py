@@ -5,6 +5,9 @@ from voltage_control import VoltageControlFrame
 from landing_sequence import LandingSequenceFrame
 from metadata import MetadataFrame
 from saftey import ButtonLockout
+import motion
+import keithley
+
 
 # ============================================================
 # Main Application
@@ -12,10 +15,14 @@ from saftey import ButtonLockout
 
 class MeasurementApp(tk.Tk):
 
-    def __init__(self):
+    def __init__(self,motors,keithley):
 
         super().__init__()
-
+        
+       
+        self.motors = motors
+        self.keithley = keithley
+        
         self.title("Hybrid Measurement System")
         self.geometry("900x800")
 
@@ -37,14 +44,14 @@ class MeasurementApp(tk.Tk):
         # Motor / Stage
         # ----------------------------------------------------
 
-        self.motor_control = MotorControlFrame(main)
+        self.motor_control = MotorControlFrame(main, motors)
 
         self.motor_control.pack(
             fill="x",
             pady=(0, 10)
         )
         
-        self.landing_control = LandingSequenceFrame(main)
+        self.landing_control = LandingSequenceFrame(main, motors)
         self.landing_control.pack(
             fill="x",
             pady=(0,10)
@@ -54,7 +61,7 @@ class MeasurementApp(tk.Tk):
         # Voltage
         # ----------------------------------------------------
 
-        self.voltage_control = VoltageControlFrame(main)
+        self.voltage_control = VoltageControlFrame(main, keithley)
 
         self.voltage_control.pack(
             fill="x",
@@ -78,5 +85,13 @@ class MeasurementApp(tk.Tk):
 
 if __name__ == "__main__":
 
-    app = MeasurementApp()
+    MOTORS_PORT = 'COM4'
+    motors = motion.motion(port=MOTORS_PORT, emulate=False)
+    
+    KEITHLEY_PORT = 'COM13'
+    keithley = keithley.Keithley(port=KEITHLEY_PORT, emulate=False)
+    keithley.reset()
+    keithley.on()
+    
+    app = MeasurementApp(motors, keithley)
     app.mainloop()

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from saftey import ButtonLockout
-BUTTON_LOCKOUT_MS = 1000
+BUTTON_LOCKOUT_MS = 2000
 
 # ============================================================
 # Motor / Stage Control
@@ -9,12 +9,13 @@ BUTTON_LOCKOUT_MS = 1000
 
 class MotorControlFrame(ttk.LabelFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, motors):
         super().__init__(
             parent,
             text="Motor / Stage Control",
             padding=10
         )
+        self.motors = motors
 
         # Create the two internal sections first
         self.xy_frame = ttk.LabelFrame(
@@ -258,27 +259,22 @@ class MotorControlFrame(ttk.LabelFrame):
     def move_up(self):
         distance = self.get_xy_step()
         print(f"Move UP {distance} mm")
-
-        # Example:
-        # self.motor.move_up(distance)
+        self.motors.moveFor('y',-distance)
 
     def move_down(self):
         distance = self.get_xy_step()
         print(f"Move DOWN {distance} mm")
-
-        # self.motor.move_down(distance)
+        self.motors.moveFor('y',distance)
 
     def move_left(self):
         distance = self.get_xy_step()
         print(f"Move LEFT {distance} mm")
-
-        # self.motor.move_left(distance)
+        self.motors.moveFor('x', -distance)
 
     def move_right(self):
         distance = self.get_xy_step()
         print(f"Move RIGHT {distance} mm")
-
-        # self.motor.move_right(distance)
+        self.motors.moveFor('x', distance)
 
     def raise_lift(self):
         #distance = self.get_lift_step()
@@ -287,7 +283,7 @@ class MotorControlFrame(ttk.LabelFrame):
 
         distance = self.get_lift_step()
         print(f"RAISE stage {distance} mm")
-        # self.motor.raise_lift(distance)
+        self.motors.moveFor('z', distance)
 
     def lower_lift(self):
         #distance = self.get_lift_step()
@@ -296,6 +292,6 @@ class MotorControlFrame(ttk.LabelFrame):
 
         distance = self.get_lift_step()
         print(f"LOWER stage {distance} mm")
-        # self.motor.lower_lift(distance)
+        self.motors.moveFor('z', -distance)
 
     

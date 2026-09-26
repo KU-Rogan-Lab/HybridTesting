@@ -8,12 +8,13 @@ from tkinter import ttk
 
 class VoltageControlFrame(ttk.LabelFrame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, keithley):
         super().__init__(
             parent,
             text="Voltage Control",
             padding=10
         )
+        self.keithley = keithley
 
         self.create_widgets()
         self.create_layout()
@@ -23,6 +24,7 @@ class VoltageControlFrame(ttk.LabelFrame):
     	self.vmax_var = tk.StringVar(value="240")
     	self.vstep_var = tk.StringVar(value="5")
     	self.compliance_var = tk.StringVar(value="1.0")
+    	self.vhold_var = tk.StringVar(value="220")
 
     	self.iv_reset_button = ttk.Button(
         	self,
@@ -84,13 +86,34 @@ class VoltageControlFrame(ttk.LabelFrame):
         	column=1,
         	padx=5
     	)
+        
+    	ttk.Label(
+        	parameters,
+        	text="Vhold(V)"
+    	).grid(
+        	row=0,
+        	column=2,
+        	padx=5
+    	)
+
+    	self.vhold_entry = ttk.Entry(
+        	parameters,
+        	textvariable=self.vhold_var,
+        	width=12
+    	)
+
+    	self.vhold_entry.grid(
+        	row=0,
+        	column=3,
+        	padx=5
+    	)
 
     	ttk.Label(
         	parameters,
         	text="Vstep (V)"
     	).grid(
         	row=0,
-        	column=2,
+        	column=4,
         	padx=5
     	)
 
@@ -102,7 +125,7 @@ class VoltageControlFrame(ttk.LabelFrame):
 
     	self.vstep_entry.grid(
         	row=0,
-        	column=3,
+        	column=5,
         	padx=5
     	)
 
@@ -111,7 +134,7 @@ class VoltageControlFrame(ttk.LabelFrame):
         	text="Max Compliance [uA]"
     	).grid(
         	row=0,
-        	column=4,
+        	column=6,
         	padx=5
     	)
 
@@ -123,7 +146,7 @@ class VoltageControlFrame(ttk.LabelFrame):
 
     	self.compliance_entry.grid(
         	row=0,
-        	column=5,
+        	column=7,
         	padx=5
     	)
 

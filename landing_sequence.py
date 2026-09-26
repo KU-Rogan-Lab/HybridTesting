@@ -10,14 +10,15 @@ BUTTON_LOCKOUT_MS = 1000
 
 class LandingSequenceFrame(ttk.LabelFrame):
 
-    def __init__(self, parent, motor=None):
+    def __init__(self, parent, motors):
         super().__init__(
             parent,
             text="Landing Sequence",
             padding=10
         )
 
-        self.motor = motor
+        self.motors = motors
+        self.movement_in_progess = False
 
         # Sequence state
         self.sequence = []
@@ -288,24 +289,33 @@ class LandingSequenceFrame(ttk.LabelFrame):
 
     def execute_current_step(self):
 
+        #if self.movement_in_progress:
+        #    return
+
         if not self.step_lockout.lock():
         	return
         
         if not self.sequence_active:
             print("No landing sequence loaded.")
             return
+       # self.movement_in_progress = True
+        #self.step_button.config(state="disabled")
 
-        current_step = self.sequence[self.current_index]
+        try:
+            
+            current_step = self.sequence[self.current_index]
 
-        print(f"Raising stage by {current_step} mm")
-
-        # Your actual motor call:
-        #
-        # self.motor.raise_lift(current_step)
-
-        self.current_index += 1
-
-        # Sequence finished
+            print(f"Raising stage by {current_step} mm")
+            self.motors.moveFor('z', current_step)  
+        
+            self.current_index += 1
+            self.update_display()
+            
+        finally:
+            self.step_lockout.unlock()
+            #self.step_button.config(state="normal")
+            
+            # Sequence finished
         if self.current_index >= len(self.sequence):
 
             print("Landing sequence complete.")
@@ -324,6 +334,7 @@ class LandingSequenceFrame(ttk.LabelFrame):
                 text="--"
             )
 
+           
             return
 
         self.update_display()
