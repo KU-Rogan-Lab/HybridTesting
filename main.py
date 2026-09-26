@@ -57,18 +57,8 @@ class MeasurementApp(tk.Tk):
             pady=(0,10)
         )
 
-        # ----------------------------------------------------
-        # Voltage
-        # ----------------------------------------------------
 
-        self.voltage_control = VoltageControlFrame(main, keithley)
-
-        self.voltage_control.pack(
-            fill="x",
-            pady=(0, 10)
-        )
-
-        # ----------------------------------------------------
+		# ----------------------------------------------------
         # Metadata
         # ----------------------------------------------------
 
@@ -77,7 +67,19 @@ class MeasurementApp(tk.Tk):
         self.metadata.pack(
             fill="x"
         )
+        
+        # ----------------------------------------------------
+        # Voltage
+        # ----------------------------------------------------
 
+        self.voltage_control = VoltageControlFrame(main, keithley, metadata)
+
+        self.voltage_control.pack(
+            fill="x",
+            pady=(0, 10)
+        )
+
+ 
 
 # ============================================================
 # Main
