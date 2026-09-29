@@ -6,9 +6,9 @@ class ButtonLockout:
 
     def __init__(self, button, duration_ms=1000):
         self.button = button
-        #self.duration_ms = duration_ms
+        self.duration_ms = duration_ms
         self.locked = False
-        #self.after_id = None
+        self.after_id = None
 
     def lock(self):
         print("LOCKOUT: lock() called, locked =", self.locked)
@@ -21,10 +21,10 @@ class ButtonLockout:
         self.button.config(state="disabled")
         print("LOCKOUT: BUTTON DISABLED")
 
-        #self.after_id = self.button.after(
-        #    self.duration_ms,
-        #    self.unlock
-        #)
+        self.after_id = self.button.after(
+            self.duration_ms,
+            self.unlock
+        )
 
         return True
 

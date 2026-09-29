@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from saftey import ButtonLockout
+from safety import ButtonLockout
 BUTTON_LOCKOUT_MS = 2000
 
 # ============================================================

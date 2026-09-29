@@ -4,7 +4,7 @@ from motor_control import MotorControlFrame
 from voltage_control import VoltageControlFrame
 from landing_sequence import LandingSequenceFrame
 from metadata import MetadataFrame
-from saftey import ButtonLockout
+from safety import ButtonLockout
 import motion
 import keithley
 

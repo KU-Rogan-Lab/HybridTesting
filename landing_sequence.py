@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from saftey import ButtonLockout
+from safety import ButtonLockout
 BUTTON_LOCKOUT_MS = 1000
 
 #=============================================================
@@ -18,7 +18,6 @@ class LandingSequenceFrame(ttk.LabelFrame):
         )
 
         self.motors = motors
-        self.movement_in_progess = False
 
         # Sequence state
         self.sequence = []
@@ -289,8 +288,7 @@ class LandingSequenceFrame(ttk.LabelFrame):
 
     def execute_current_step(self):
 
-        #if self.movement_in_progress:
-        #    return
+        
 
         if not self.step_lockout.lock():
         	return
@@ -309,10 +307,10 @@ class LandingSequenceFrame(ttk.LabelFrame):
             self.motors.moveFor('z', current_step)  
         
             self.current_index += 1
-            self.update_display()
+            #self.update_display()
             
-        finally:
-            self.step_lockout.unlock()
+        #finally:
+         #   self.step_lockout.unlock()
             #self.step_button.config(state="normal")
             
             # Sequence finished
