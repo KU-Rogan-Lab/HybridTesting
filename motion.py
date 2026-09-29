@@ -147,8 +147,8 @@ class motion:
 
     def moveTo(self, motor=None, position=0, coordinates=['0','0','0']):
         """
-			Sends to chick to the wanted position
-			Returns the final position
+            Sends to chick to the wanted position
+            Returns the final position
             Usage:
             moveTo() #goes to [0,0,0] (home)
             moveTo('x') #goes to 0 for x, other directions unchanged

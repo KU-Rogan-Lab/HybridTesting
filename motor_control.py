@@ -279,7 +279,7 @@ class MotorControlFrame(ttk.LabelFrame):
     def raise_lift(self):
         #distance = self.get_lift_step()
         if not self.raise_lockout.lock():
-        	return
+            return
 
         distance = self.get_lift_step()
         print(f"RAISE stage {distance} mm")
@@ -288,7 +288,7 @@ class MotorControlFrame(ttk.LabelFrame):
     def lower_lift(self):
         #distance = self.get_lift_step()
         if not self.raise_lockout.lock():
-        	return
+            return
 
         distance = self.get_lift_step()
         print(f"LOWER stage {distance} mm")

@@ -72,9 +72,9 @@ class LandingSequenceFrame(ttk.LabelFrame):
         )
         
         self.step_lockout = ButtonLockout(
-    		self.step_button,
-    		duration_ms=BUTTON_LOCKOUT_MS
-		)
+            self.step_button,
+            duration_ms=BUTTON_LOCKOUT_MS
+        )
 
         self.cancel_button = ttk.Button(
             self,
@@ -291,7 +291,7 @@ class LandingSequenceFrame(ttk.LabelFrame):
         
 
         if not self.step_lockout.lock():
-        	return
+            return
         
         if not self.sequence_active:
             print("No landing sequence loaded.")

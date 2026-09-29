@@ -112,9 +112,9 @@ class MetadataFrame(ttk.LabelFrame):
             "tag": self.tag_var.get()
         }
         
-	def create_workspace(self):
-		#create the parent directory if it doesn't exist
-		dir_path = Path(self.parent_dir_var.get())
+    def create_workspace(self):
+        #create the parent directory if it doesn't exist
+        dir_path = Path(self.parent_dir_var.get())
         dir_path.mkdir(parents=True, exist_ok=True)
         #create the hybrid directory inside the parent directory if it doesn't exist
         hybrid_path = Path(self.parent_dir_var.get() + "/" + self.hybrid_name_var.get())
