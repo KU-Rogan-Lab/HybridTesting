@@ -24,18 +24,20 @@ class Keithley:
         
         print("Keithley Initialized")
     
+    #this expects to start from 0 and ramp up
     def step_voltage( self, starting_voltage=1., target_voltage=2., compliance=1e-9, stepsize=1.):
         self.keithley.apply_voltage(voltage_range=target_voltage, compliance_current=compliance)
         self.keithley.source_voltage = 0.
         self.on()
+        self.keithley.measure_current() 
         current_set = [] #store current at each voltage step
-        numstep = int((target_voltage - starting_voltage) / stepsize) + 1
-        voltage_steps = np.linspace(starting_voltage, target_voltage, num=num)
+        numstep = int(abs(target_voltage - starting_voltage) / stepsize) + 1
+        voltage_steps = np.linspace(starting_voltage, target_voltage, num=numstep)
         
-        print("Keithley Ramping - Starting: {voltage_steps[0]}   Target: {voltage_steps[-1]} [V]   V_step: {stepsize}    Compl.:{compliance_current}")
+        print(f"Keithley Ramping - Starting: {voltage_steps[0]}   Target: {voltage_steps[-1]} [V]   V_step: {stepsize}    Compl.:{compliance}")
         for v in voltage_steps:
             self.keithley.source_voltage = v
-            sleep(1)
+            sleep(2)
             current = self.keithley.current
             current_set.append(current)
             print(f"Voltage: {v} V, Current: {current} A")
@@ -46,8 +48,22 @@ class Keithley:
         
         #always measure current and return the set of V,I
         print("Ramping Complete")
-        return voltage_steps, current_set    
-    
+        return voltage_steps, current_set  
+    #this assumes keithley is engaged and we will just step the voltage to the desired target (expecting to step down from breakdown BV)
+    def step_to_hold( self, starting_voltage=2., target_voltage=1., compliance=1e-9, stepsize=1.):
+        numstep = int(abs(target_voltage - starting_voltage) / stepsize) + 1
+        voltage_steps = np.linspace(starting_voltage, target_voltage, num=numstep)
+        print(f"Keithley Ramping - Starting: {voltage_steps[0]}   Target: {voltage_steps[-1]} [V]   V_step: {stepsize}    Compl.:{compliance}")
+        for v in voltage_steps:
+            self.keithley.source_voltage = v
+            sleep(2)
+            current = self.keithley.current
+            print(f"Voltage: {v} V, Current: {current} A")
+            #check for compliance abort if exceeded
+            if current >= compliance :
+                print("-- Compliance hit, aborting voltage step! --" )
+                break
+        
     def reset_voltage( self ):
         self.keithley.source_voltage = 0.
         self.off

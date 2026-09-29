@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from safety import ButtonLockout
-BUTTON_LOCKOUT_MS = 1000
+BUTTON_LOCKOUT_MS = 2500
 
 #=============================================================
 # Landing Sequence Control
@@ -299,14 +299,14 @@ class LandingSequenceFrame(ttk.LabelFrame):
        # self.movement_in_progress = True
         #self.step_button.config(state="disabled")
 
-        try:
-            
-            current_step = self.sequence[self.current_index]
-
-            print(f"Raising stage by {current_step} mm")
-            self.motors.moveFor('z', current_step)  
         
-            self.current_index += 1
+            
+        current_step = self.sequence[self.current_index]
+
+        print(f"Raising stage by {current_step} mm")
+        self.motors.moveFor('z', current_step)  
+        
+        self.current_index += 1
             #self.update_display()
             
         #finally:

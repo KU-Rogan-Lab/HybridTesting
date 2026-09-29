@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from safety import ButtonLockout
-BUTTON_LOCKOUT_MS = 2000
+BUTTON_LOCKOUT_MS = 2500
 
 # ============================================================
 # Motor / Stage Control

@@ -72,7 +72,7 @@ class MeasurementApp(tk.Tk):
         # Voltage
         # ----------------------------------------------------
 
-        self.voltage_control = VoltageControlFrame(main, keithley, metadata)
+        self.voltage_control = VoltageControlFrame(main, keithley, self.metadata)
 
         self.voltage_control.pack(
             fill="x",

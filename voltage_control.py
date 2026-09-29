@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import matplotlib.pyplot as plt
+import numpy as np
 
 # ============================================================
 # Voltage Control
@@ -199,26 +200,27 @@ class VoltageControlFrame(ttk.LabelFrame):
         print("Measure IV and reset")
         parameters = self.get_parameters()
         print(parameters)
-        V, I = self.keithley.step_voltage( 0.0, parameters.vmax, parameters.compliance*1e-6, parameters.vstep )
+        V, I = self.keithley.step_voltage( 0.0, parameters['vmax'], parameters['compliance']*1e-6, parameters['vstep'] )
         self.get_IV_curve(V, I)
-        self.keithley.reset_voltage()
+        #self.keithley.reset_voltage()
+        self.reset_voltage()
 
     def measure_iv_hold(self):
         print("Measure IV and hold")
         parameters = self.get_parameters()
         print(parameters)
-        V, I = self.keithley.step_voltage( 0.0, parameters.vmax, parameters.compliance*1e-6, parameters.vstep )
+        V, I = self.keithley.step_voltage( 0.0, parameters['vmax'], parameters['compliance']*1e-6, parameters['vstep'] )
         self.get_IV_curve(V, I)
         print("Stepping down to Vhold")
-        self.keithley.set_voltage( parameters.vmax, parameters.vhold, parameters.compliance*1e-6, parameters.vstep )
-        print("Holding at {parameters.vhold}, manually reset when finished")
+        self.keithley.step_to_hold( parameters['vmax'], parameters['vhold'], parameters['compliance']*1e-6, parameters['vstep'] )
+        print(f"Holding at {parameters['vhold']}, manually reset when finished")
         
     def step_and_hold(self):
         print("Step voltage and hold")
         parameters = self.get_parameters()
         print(parameters)
-        V, I = self.keithley.step_voltage( 0.0, parameters.vmax, parameters.compliance*1e-6, parameters.vstep )
-        print("Holding at {parameters.vhold}, manually reset when finished")
+        V, I = self.keithley.step_voltage( 0.0, parameters['vmax'], parameters['compliance']*1e-6, parameters['vstep'] )
+        print(f"Holding at {parameters['vhold']}, manually reset when finished")
 
     def reset_voltage(self):
         print("Reset voltage to 0 V")
@@ -227,15 +229,14 @@ class VoltageControlFrame(ttk.LabelFrame):
     def get_IV_curve(self, Vset, ISet):
         #embed hybrid metadata info into the plot
         metadata = self.metadataFrame.get_metadata()
-        self.metadata.create_workspace() #make directories if they are not present
+        self.metadataFrame.create_workspace() #make directories if they are not present
 
-        I_uA = ISet*1e6
-        #drop first noisy measurement at 0V
-        currents = np.array(I_uA[1:])
+        #drop first noisy measurement at 0V (also convert to uA)
+        currents = np.array(ISet[1:])*1e-6
         voltages = np.array(Vset[1:])
         combined_data = np.column_stack((voltages, currents))
-        target_directory = metadata.parent_directory + '/' + metadata.hybrid_name + '/'
-        csvname = target_directory + metadata.hybrid_name + '_' + metadata.tag + '.csv'
+        target_directory = metadata['parent_directory'] + '/' + metadata['hybrid_name'] + '/'
+        csvname = target_directory + metadata['hybrid_name'] + '_' + metadata['tag'] + '.csv'
         np.savetxt(csvname, combined_data, delimiter=",", header="voltage,current", comments="")
 
 
@@ -243,10 +244,10 @@ class VoltageControlFrame(ttk.LabelFrame):
         ax.scatter(voltages,currents, label='Current Measurements')
         ax.set_ylabel('Measured Current [$\mu$A]')
         ax.set_xlabel('Applied Voltage [V]')
-        ax.set_title('Hybrid Reverse Bias ' + metadata.hybrid_name)
+        ax.set_title('Hybrid Reverse Bias ' + metadata['hybrid_name'])
         ax.legend()
-        figname = target_directory + metadata.hybrid_name + '_' + metadata.tag + '.png'
-        plt.savefig("my_plot.png", dpi=300, bbox_inches="tight")
-        plt.show()
+        figname = target_directory + metadata['hybrid_name'] + '_' + metadata['tag'] + '.png'
+        plt.savefig(figname, dpi=300, bbox_inches="tight")
+        #plt.show() #drawing causes the reset or vhold voltage changes to not execute
         print("IV analysis completed")
 
