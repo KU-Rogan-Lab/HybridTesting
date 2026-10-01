@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from safety import ButtonLockout
+from gui_components.safety import ButtonLockout
 BUTTON_LOCKOUT_MS = 2500
 
 # ============================================================

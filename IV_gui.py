@@ -1,12 +1,12 @@
 import tkinter as tk
 from tkinter import ttk
-from motor_control import MotorControlFrame
-from voltage_control import VoltageControlFrame
-from landing_sequence import LandingSequenceFrame
-from metadata import MetadataFrame
-from safety import ButtonLockout
-import motion
-import keithley
+from gui_components.motor_control import MotorControlFrame
+from gui_components.voltage_control import VoltageControlFrame
+from gui_components.landing_sequence import LandingSequenceFrame
+from gui_components.metadata import MetadataFrame
+from gui_components.safety import ButtonLockout
+import hardware_components.motion
+import hardware_components.keithley
 
 
 # ============================================================
